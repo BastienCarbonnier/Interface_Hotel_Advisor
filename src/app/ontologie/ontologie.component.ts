@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OntologieService } from '../ontologie.service';
+import { OntologieService } from './ontologie.service';
 import * as d3 from 'd3';
 
 @Component({
@@ -34,14 +34,47 @@ export class OntologieComponent implements OnInit {
 		        "children": [
 		          {
 		            "name": "Son of A",
+		            "children":[
+		            {
+		            	"name":"Samson"
+		            },
+		            {
+		            	"name":"Sam le Brave"
+		            },
+		            {
+		            	"name":"Sans Gluten"
+		            }
+		            ],
 		          },
 		          {
 		            "name": "Daughter of A",
+		            "children":[
+		            {
+		            	"name":"Samson"
+		            },
+		            {
+		            	"name":"Sam le Brave"
+		            },
+		            {
+		            	"name":"Sans Gluten"
+		            }
+		            ]
 		          }
 		        ]
 		      },
 		      {
 		        "name": "Level 2: B",
+		        "children":[
+		            {
+		            	"name":"Samson"
+		            },
+		            {
+		            	"name":"Sam le Brave"
+		            },
+		            {
+		            	"name":"Sans Gluten"
+		            }
+		            ]
 		      }
 		    ]
 		  };

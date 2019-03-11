@@ -9,22 +9,26 @@ import * as d3 from 'd3';
 })
 export class OntologieComponent implements OnInit {
 
-  private tree : any;
+  private listOnto : any;
 
   constructor(private service: OntologieService) { }
 
-  private listOnto : Object[];
+  
   ngOnInit() {
   	this.service.getOntologie().subscribe(res =>{
   		this.listOnto = res;
+console.log(this.listOnto[0]);
+this.ontologie();
   	});
-  this.ontologie();
+    
+  
   }
   ngAfterContentInit(){
   	
   }
 
   ontologie(){
+  
 	  	var treeData = 
 		  {
 		    "name": "Top Level",
@@ -81,7 +85,7 @@ export class OntologieComponent implements OnInit {
 // Set the dimensions and margins of the diagram
 var margin = {top: 20, right: 90, bottom: 30, left: 90},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 // appends a 'group' element to 'svg'
@@ -101,7 +105,7 @@ var i = 0,
 var treemap = d3.tree().size([height, width]);
 
 // Assigns parent, children, height, depth
-root = d3.hierarchy(treeData, function(d) { return d.children; });
+root = d3.hierarchy(this.listOnto[0], function(d) { return d.children; });
 root.x0 = height / 2;
 root.y0 = 0;
 

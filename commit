@@ -1,0 +1,2 @@
+pour commit depuis le head détaché vers le master :
+git push origin HEAD:master

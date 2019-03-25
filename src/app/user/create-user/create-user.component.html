@@ -1,0 +1,48 @@
+<div style="text-align:center">
+	<br />
+		<h1>Formulaire d'inscription</h1>
+	<br />
+</div>
+
+<div class="container">
+    <div *ngIf="!notAdded">
+     	<ngb-alert [dismissible]="false" type="danger">
+        	<strong>Cet email est déjà utilisé !</strong>
+      	</ngb-alert>
+    </div>
+    
+    <form class="form" method="post" *ngIf="!submitted" (ngSubmit)="onSubmit()">
+    	<div class="form-group col-4" style="margin: 0 auto;">
+        	<label>Login (email) </label>
+			<input type="text" required placeholder="votre email" class="form-control" name="login" [(ngModel)]="mail"/>
+      	</div><br />
+
+      	<div class="form-group col-4" style="margin: 0 auto;">
+       		<label>Mot de passe </label>
+			<input type="password" required placeholder="votre mot de passe" class="form-control" name="mdp" [(ngModel)]="mdp"/>
+      	</div><br />
+
+      	<div class="form-group col-4" style="margin: 0 auto;">
+       		<label>Nom </label>
+			<input type="text" required placeholder="votre nom" class="form-control" name="nom" [(ngModel)]="nom"/>
+      	</div><br />
+
+      	<div class="form-group col-4" style="margin: 0 auto;">
+        	<label>Prenom</label>
+			<input type="text" required placeholder="votre prenom" class="form-control" name="prenom" [(ngModel)]="prenom"/>
+      	</div><br />
+     
+     	<div style="text-align:center">
+      		<button type="submit" class="btn btn-success">Envoyer</button>
+    	</div>
+     </form>
+
+    <div *ngIf="submitted">
+    	<br/>
+      	<ngb-alert [dismissible]="false" type="success">
+          	<strong>Inscription réussie !</strong>
+      	</ngb-alert>
+      	<br/>
+      	<br/>
+    </div>
+</div>

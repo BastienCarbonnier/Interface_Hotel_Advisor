@@ -1,6 +1,6 @@
 <div style="text-align:center">
 	<br />
-		<h3>Emetteur {{nom}} {{nom}}</h3>donnez nous votre avis !
+		<h3>Emetteur {{nom}} {{nom}}</h3>Donnez nous votre avis !
 	<br />
 </div>
 <br>
@@ -19,21 +19,40 @@
   </p>
 </div>
 
+<div *ngIf="erreur_bdd" style="text-align:center">
+  <p>
+    <ngb-alert [dismissible]="false" type="success">
+      <strong>Erreur</strong> Erreur lors de lajout dans la BDD. 
+    </ngb-alert>
+  </p>
+</div>
+
 <br><br>
-<div class="form-row" style="text-align:center; margin-left: 25%">
+<div class="form-row" style="text-align:center">
 	<div class="form-group col-sm-4">
 		
 		<h5>Choisir Hotel </h5>
 		
-		<select class="selectpicker" style="width:60%;"  [(ngModel)]="selected_hotel" >
+		<select class="selectpicker" style="width:60%;width: 250px;"  [(ngModel)]="selected_hotel" >
 			<option [ngValue]="undefined" disabled>Choisir un hotel</option>
 			<option *ngFor="let hotel of hotels" [value]="hotel.id_hotel">{{hotel.nom}}</option>
 		</select>
 
 	</div>
+
+	<div class="form-group col-sm-2">
+		<h5>Date début du séjour</h5>
+		<input type="text" placeholder="aaaa-mm-dd" [(ngModel)]="la_date_choisi" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"/>
+	</div>
+
+	<div class="form-group col-sm-2">
+		<h5>Nombre de jour</h5>
+		<input style=" width:70px;" [(ngModel)]="nb_jour" min=1 type="number">
+	</div>
+
 	<div class="form-group">
 		<h5>Votre commentaire </h5>
-		<textarea style="resize: none" [(ngModel)]="commentaire" cols="40" rows="6" placeholder="Votre commentaire."></textarea>
+		<textarea style="resize: none" [(ngModel)]="commentaire" cols="40" rows="4" placeholder="Votre commentaire."></textarea>
 	</div>
 </div>
 

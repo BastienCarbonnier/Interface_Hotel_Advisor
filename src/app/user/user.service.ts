@@ -35,9 +35,10 @@ export class UserService {
   		return observable;
   	}
 
-    /*addCommentaire(mail:string, id_hotel : number, commentaire:string){
+    addCommentaire(mail:string, id_hotel : string, commentaire:string, date_debut_sejour: string, nb_jours_reste: number){
       let url= "http://localhost:8888/addCom";
-      let data = {"mail":mail,"nom":nom,"prenom":prenom, "mdp":mdp,"type":"emetteur"};
-    }*/
+      let data = {"mail":mail,"id_hotel":parseInt(id_hotel),"commentaire":commentaire, "date_debut_sejour":date_debut_sejour,"nb_jours_reste":nb_jours_reste};
+      return this.http.post(url,data);
+    }
 
 }

@@ -1,0 +1,42 @@
+<div style="text-align:center">
+	<br />
+		<h3>Emetteur {{nom}} {{nom}}</h3>donnez nous votre avis !
+	<br />
+</div>
+<br>
+<div *ngIf="saisie_incorrecte" style="text-align:center">
+  <p>
+    <ngb-alert [dismissible]="false" type="danger">
+      <strong>Erreur !</strong> Saisir tous les champs ! 
+    </ngb-alert>
+  </p>
+</div>
+<div *ngIf="saisie_ok" style="text-align:center">
+  <p>
+    <ngb-alert [dismissible]="false" type="success">
+      <strong>Parfait !</strong> Commentaire ajouté ! 
+    </ngb-alert>
+  </p>
+</div>
+
+<br><br>
+<div class="form-row" style="text-align:center; margin-left: 25%">
+	<div class="form-group col-sm-4">
+		
+		<h5>Choisir Hotel </h5>
+		
+		<select class="selectpicker" style="width:60%;"  [(ngModel)]="selected_hotel" >
+			<option [ngValue]="undefined" disabled>Choisir un hotel</option>
+			<option *ngFor="let hotel of hotels" [value]="hotel.id_hotel">{{hotel.nom}}</option>
+		</select>
+
+	</div>
+	<div class="form-group">
+		<h5>Votre commentaire </h5>
+		<textarea style="resize: none" [(ngModel)]="commentaire" cols="40" rows="6" placeholder="Votre commentaire."></textarea>
+	</div>
+</div>
+
+<div style="text-align:center">
+	<button  (click)="addCommentaire()" class="btn btn-info btn-sm col-sm-1">Envoyer !</button>
+</div>

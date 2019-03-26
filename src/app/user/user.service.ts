@@ -24,11 +24,20 @@ export class UserService {
   	}
 
   	addUser(mail:string, nom:string, prenom:string, mdp:string): Observable<any> {
-  		let url= "http://localhost:8888/addUser"
+  		let url= "http://localhost:8888/addUser";
   		let data = {"mail":mail,"nom":nom,"prenom":prenom, "mdp":mdp,"type":"emetteur"};
 
   		return this.http.post(url,data);
   	}
 
+  	getHotel() :Observable<any>{
+  		let observable: Observable<any> = this.http.get("http://localhost:8888/allHotel");
+  		return observable;
+  	}
+
+    /*addCommentaire(mail:string, id_hotel : number, commentaire:string){
+      let url= "http://localhost:8888/addCom";
+      let data = {"mail":mail,"nom":nom,"prenom":prenom, "mdp":mdp,"type":"emetteur"};
+    }*/
 
 }

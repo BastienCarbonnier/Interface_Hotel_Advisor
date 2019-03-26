@@ -13,6 +13,7 @@ import { MenuComponent } from './menu/menu.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
 import { LoginUserComponent } from './user/login-user/login-user.component';
+import { EmetteurComponent } from './user/emetteur/emetteur.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
    path:'login',
    component: LoginUserComponent
+  },
+  {
+   path:'emetteur',
+   component: EmetteurComponent
   }
 ]
 
@@ -37,6 +42,7 @@ const routes: Routes = [
     MenuComponent,
     CreateUserComponent,
     LoginUserComponent,
+    EmetteurComponent,
     HomepageComponent
   ],
   imports: [

@@ -21,9 +21,15 @@
       		<button type="submit" class="btn btn-success">Connexion</button>
  		</div>
     </form>
+    <br>
 
-    <div *ngIf="isLogged">
-    	<br/>
-    	{{login}} is logged !
+    <div *ngIf="!reussi" style="text-align:center">
+      <p>
+        <ngb-alert [dismissible]="false">
+          <strong>Erreur !</strong> Mauvaise information de connexion ! 
+        </ngb-alert>
+      </p>
     </div>
+
+
 </div>

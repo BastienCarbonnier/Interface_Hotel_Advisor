@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
-  <a class="navbar-brand" [routerLink]="['/']">Accueil</a>
+  <a class="navbar-brand" *ngIf="!isLogged" [routerLink]="['/login']">Accueil</a>
+  <a class="navbar-brand" *ngIf="isLogged" [routerLink]="['/']">Accueil</a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -11,10 +12,10 @@
         <a class="nav-link text-light" *ngIf="isEmetteur" [routerLink]="['/emetteur']">Donner votre avis sur un hotel</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" *ngIf="isGerant" [routerLink]="['/']">Recherche hotel</a>
+        <a class="nav-link text-light" *ngIf="isGerant" [routerLink]="['/gerant']">Analyser hotels</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" *ngIf="isAdmin" [routerLink]="['/']">Administration</a>
+        <a class="nav-link text-light" *ngIf="isAdmin" [routerLink]="['/admin']">Administration</a>
       </li>
 
      </ul>

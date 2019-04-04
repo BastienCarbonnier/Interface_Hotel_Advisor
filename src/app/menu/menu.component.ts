@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -16,7 +17,7 @@ export class MenuComponent implements OnInit {
   private isGerant: boolean = false;
   private isEmetteur: boolean = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -44,6 +45,7 @@ export class MenuComponent implements OnInit {
     this.isAdmin = false;
     this.isGerant = false;
     this.isEmetteur = false;
+    this.router.navigate(['/login']);
   }
 
 }

@@ -14,12 +14,19 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { CreateUserComponent } from './user/create-user/create-user.component';
 import { LoginUserComponent } from './user/login-user/login-user.component';
 import { EmetteurComponent } from './user/emetteur/emetteur.component';
+import { AvisComponent } from './admin/avis/avis.component';
+import { InstanciationComponent } from './admin/instanciation/instanciation.component';
+import { AffichageComponent } from './gerant/affichage/affichage.component';
+
+import { GuardGerantService } from './gerant/guard-gerant.service';
+import { GuardAdminService } from './admin/guard-admin.service';
+import { GuardEmetteurService } from './user/guard-emetteur.service';
 
 
 const routes: Routes = [
   {
    path:'', 
-   component: HomepageComponent
+   component: LoginUserComponent
   },
   {
    path:'subscription', 
@@ -31,7 +38,23 @@ const routes: Routes = [
   },
   {
    path:'emetteur',
-   component: EmetteurComponent
+   component: EmetteurComponent,
+   canActivate : [GuardEmetteurService]
+  },
+  {
+    path:'gerant',
+    component: AffichageComponent,
+    canActivate : [GuardGerantService]
+  },
+  {
+    path:'admin',
+    component : AvisComponent,
+    canActivate : [GuardAdminService]
+  },
+  {
+    path:'instanciation',
+    component : InstanciationComponent,
+    canActivate : [GuardAdminService]
   }
 ]
 
@@ -43,7 +66,10 @@ const routes: Routes = [
     CreateUserComponent,
     LoginUserComponent,
     EmetteurComponent,
-    HomepageComponent
+    HomepageComponent,
+    AvisComponent,
+    AffichageComponent,
+    InstanciationComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +82,7 @@ const routes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [OntologieService],
+  providers: [OntologieService,GuardGerantService,GuardAdminService,GuardEmetteurService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

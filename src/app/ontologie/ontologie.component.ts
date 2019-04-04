@@ -17,12 +17,11 @@ export class OntologieComponent implements OnInit {
   ngOnInit() {
   	this.service.getOntologie().subscribe(res =>{
   		this.listOnto = res;
-console.log(this.listOnto[0]);
-this.ontologie();
+      console.log(this.listOnto[0]);
+      this.ontologie();
   	});
-    
-  
-  }
+
+   }
   ngAfterContentInit(){
   	
   }

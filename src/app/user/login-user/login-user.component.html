@@ -1,11 +1,17 @@
-<div style="text-align:center">
+<div style="text-align:center" *ngIf="!alreadyLogged">
 	<br />
 		<h1>Connexion ! </h1>
 	<br />
 </div>
+<div style="text-align:center" *ngIf="alreadyLogged">
+  <br>
+    <h1 *ngIf="uti">Donner votre avis ! </h1>
+    <h1 *ngIf="gerant">Analyser vos hotels ! </h1>
+    <h1 *ngIf="admin">Gérer les avis et les onthologies ! </h1>
+</div>
 
 <div class="container">
-    <form class="form" method="post" *ngIf="!isLogged" (ngSubmit)="onSubmit()">
+    <form class="form" method="post" *ngIf="!alreadyLogged" (ngSubmit)="onSubmit()">
       	<div class="form-group col-4" style="margin: 0 auto;">
         	<label>Login </label>
 		    <input type="text" class="form-control" required placeholder="Mail" name="login" [(ngModel)]="login"/>

@@ -1,9 +1,9 @@
 <div class="form-row" >
 	<div class="form-group col-6" style="text-align:right;margin-top: 50px;margin-left: 50px;">
-		<h5>Choisir un Hotel </h5>
+		<h5>Choisir un Hôtel </h5>
 		
 		<select class="selectpicker" style="width:60%;width: 250px;"  [(ngModel)]="selected_hotel" >
-			<option [ngValue]="undefined" disabled>Choisir un hotel</option>
+			<option [ngValue]="undefined" disabled>Choisir un hôtel</option>
 			<option *ngFor="let hotel of hotels" [value]="hotel.id_hotel">{{hotel.nom}}</option>
 		</select>
 	</div>

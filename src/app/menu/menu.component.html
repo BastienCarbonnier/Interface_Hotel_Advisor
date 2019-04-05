@@ -9,13 +9,16 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link text-light" *ngIf="isEmetteur" [routerLink]="['/emetteur']">Donner votre avis sur un hotel</a>
+        <a class="nav-link text-light" *ngIf="isEmetteur" [routerLink]="['/emetteur']">Donner votre avis sur un hôtel</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" *ngIf="isGerant" [routerLink]="['/gerant']">Analyser hotels</a>
+        <a class="nav-link text-light" *ngIf="isGerant" [routerLink]="['/gerant']">Analyser hôtels</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-light" *ngIf="isAdmin" [routerLink]="['/admin']">Administration</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" *ngIf="isAdmin" [routerLink]="['/instanciation']">Instanciation d'ontologie</a>
       </li>
 
      </ul>

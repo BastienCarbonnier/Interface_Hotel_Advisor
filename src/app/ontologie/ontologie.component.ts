@@ -23,7 +23,7 @@ export class OntologieComponent implements OnInit {
 
    }
   ngAfterContentInit(){
-  	
+  	console.log("lol");
   }
 
   ontologie(){
@@ -266,5 +266,10 @@ function update(source) {
   }
 }
 }
+  ngOnDestroy(){
+  console.log("mdr");
+    d3.select("svg").selectAll("*").remove();
+    d3.select("svg").remove();
+  }
 
 }

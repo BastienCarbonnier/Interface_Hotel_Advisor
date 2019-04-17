@@ -44,7 +44,10 @@ const routes: Routes = [
   {
     path:'gerant',
     component: AffichageComponent,
-    canActivate : [GuardGerantService]
+    canActivate : [GuardGerantService],
+    children:[
+      {path:'', component: OntologieComponent}
+    ]
   },
   {
     path:'admin',

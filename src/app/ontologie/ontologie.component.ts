@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OntologieService } from './ontologie.service';
+import { ActivatedRoute } from '@angular/router';
+import { AdminService } from '../admin/admin.service';
 import * as d3 from 'd3';
 
 @Component({
@@ -10,18 +12,58 @@ import * as d3 from 'd3';
 export class OntologieComponent implements OnInit {
 
   private listOnto : any;
+  private selected_hotel : string;
+  private selected_hotel_old : string;
+  private sub : any;
+  private liste_commentaire : Object[] = [];
+  private noComment : boolean = false;
 
-  constructor(private service: OntologieService) { }
-
+  constructor(private service: OntologieService, private route: ActivatedRoute, private serviceAdmin: AdminService ) { }
   
   ngOnInit() {
+    this.sub = this.route.params.subscribe(params =>{
+        this.selected_hotel = params['selected_hotel'];
+    });
+
   	this.service.getOntologie().subscribe(res =>{
-  		this.listOnto = res;
+   		this.listOnto = res;
       console.log(this.listOnto[0]);
       this.ontologie();
   	});
-
    }
+  ngDoCheck(){
+    // Evite Angular d'inonder de requête le server Node. Il fait la requête que si l'utilisateur choisi un autre hôtel
+      if(this.selected_hotel_old != this.selected_hotel){ 
+          this.traitement(this.selected_hotel);
+          this.selected_hotel_old = this.selected_hotel;
+
+      }
+
+  }
+
+  traitement(id : string){
+      this.serviceAdmin.getCommentaireByIdNoTraiter(this.selected_hotel).subscribe(res =>{
+        this.liste_commentaire = res;
+        if(this.liste_commentaire.length!=0){
+          this.noComment = true;
+          let commentaire : Object[] = [];
+          for (let key in this.liste_commentaire) {
+              commentaire[key]=this.liste_commentaire[key]['commentaire'];
+          }
+          
+          //changer ici
+          this.service.getOntologie().subscribe(res =>{
+            this.listOnto = res;
+            this.ontologie();
+          });
+        }else{
+          this.noComment=false;
+          d3.select("svg").selectAll("*").remove();
+          d3.select("svg").remove();
+        }
+        console.log(this.liste_commentaire);
+      });
+  }
 
   ontologie(){
   

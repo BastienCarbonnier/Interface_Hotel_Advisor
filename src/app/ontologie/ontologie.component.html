@@ -1,2 +1,9 @@
-<div class="ontologie"></div>
-<div id="treeView"></div>
+
+<div *ngIf="!noComment" style="text-align:center;">
+		<h2>Il n'y a pas de commentaire pour cette hotel !</h2>
+</div>
+<div *ngIf="noComment">
+	<div class="ontologie"></div>
+	<div id="treeView"></div>
+</div>
+

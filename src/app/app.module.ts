@@ -46,7 +46,7 @@ const routes: Routes = [
     component: AffichageComponent,
     canActivate : [GuardGerantService],
     children:[
-      {path:'', component: OntologieComponent}
+      {path:':selected_hotel', component: OntologieComponent}
     ]
   },
   {

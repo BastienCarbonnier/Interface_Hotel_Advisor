@@ -16,6 +16,11 @@ export class AdminService {
   		return observable;
   	}
 
+    getCommentaireByIdNoTraiter(id: string): Observable<any>{
+      let observable: Observable<any> = this.http.get("http://localhost:8888/comHotelNoTraite/hotelId="+id);
+      return observable;
+    }
+
   	getHotel() :Observable<any>{
   		let observable: Observable<any> = this.http.get("http://localhost:8888/allHotel");
   		return observable;

@@ -24,13 +24,8 @@ export class OntologieComponent implements OnInit {
     this.sub = this.route.params.subscribe(params =>{
         this.selected_hotel = params['selected_hotel'];
     });
-
-  	this.service.getOntologie().subscribe(res =>{
-   		this.listOnto = res;
-      console.log(this.listOnto[0]);
-      this.ontologie();
-  	});
    }
+
   ngDoCheck(){
     // Evite Angular d'inonder de requête le server Node. Il fait la requête que si l'utilisateur choisi un autre hôtel
       if(this.selected_hotel_old != this.selected_hotel){ 
@@ -54,6 +49,7 @@ export class OntologieComponent implements OnInit {
           //changer ici
           this.service.getOntologie().subscribe(res =>{
             this.listOnto = res;
+            console.log(this.listOnto[0]);
             this.ontologie();
           });
         }else{
@@ -280,7 +276,6 @@ function update(source) {
   var linkEnter = link.enter().insert('path', "g")
       .attr("class", "link")
       .attr('d', function(d){
-      //console.log(d);
         var o = {x: source.x0, y: source.y0};
         return diagonal(o, o);
       })

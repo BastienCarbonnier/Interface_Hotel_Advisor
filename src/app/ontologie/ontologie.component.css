@@ -3,6 +3,27 @@
   stroke: steelblue;
   stroke-width: 3px;
 }
+.negative-node circle {
+	fill:#DC143C;
+	stroke: steelblue;
+	stroke-width: 3px; 
+}
+.semi-negative-node circle {
+	fill:#DC143CAB;
+	stroke: steelblue;
+	stroke-width: 3px; 
+}
+
+.positive-node circle {
+	fill:#008000;
+	stroke: steelblue;
+	stroke-width: 3px; 
+}
+.semi-positive-node circle {
+	fill: #00800096;
+	stroke: steelblue;
+	stroke-width: 3px; 
+}
 
 .node text { font: 12px sans-serif; }
 

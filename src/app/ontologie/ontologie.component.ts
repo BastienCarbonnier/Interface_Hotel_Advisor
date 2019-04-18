@@ -22,9 +22,6 @@ export class OntologieComponent implements OnInit {
   	});
 
    }
-  ngAfterContentInit(){
-  	console.log("lol");
-  }
 
   ontologie(){
   
@@ -153,7 +150,8 @@ function update(source) {
       .attr('class', 'node')
       .attr('r', 1e-6)
       .style("fill", function(d) {
-          return d._children ? "lightsteelblue" : "#fff";
+          console.log(d);
+          //return d._children ? "lightsteelblue" : "#fff";
       })
       .attr("style","fill: #fff;stroke: steelblue;stroke-width: 3px;");
 
@@ -182,6 +180,33 @@ function update(source) {
   nodeUpdate.select('circle.node')
     .attr('r', 10)
     .style("fill", function(d) {
+        if(d.data.polarite){
+        var bg;
+          if(d.data.polarite[1] > d.data.polarite[0] && d.data.polarite[1] > d.data.polarite[2]){
+            if(d.data.polarite[0] >= d.data.polarite[2]){
+                bg = 1 - ((d.data.polarite[1] - d.data.polarite[0])/100)%2;
+                return `rgba(220,20,60,${bg})`;
+            }
+            else{
+                bg = 1 - ((d.data.polarite[1] - d.data.polarite[2])/100)%2;
+                return `rgba(0,128,0,${bg})`;
+            }
+          }
+          else if(d.data.polarite[0] > d.data.polarite[2]){
+                bg = 1 - ((d.data.polarite[1] + d.data.polarite[2])/100)%2;
+                return `rgba(220,20,60,${bg})`;
+          }
+          else{
+                bg = 1 - ((d.data.polarite[1] + d.data.polarite[0])/100)%2;
+                return `rgba(0,128,0,${bg})`;
+          }
+        }
+        else if(d._children){
+          return "lightsteelblue";
+        }
+        else{
+          return "#fff";
+        }
         return d._children ? "lightsteelblue" : "#fff";
     })
     .attr('cursor', 'pointer');
@@ -213,7 +238,7 @@ function update(source) {
   var linkEnter = link.enter().insert('path', "g")
       .attr("class", "link")
       .attr('d', function(d){
-      console.log(d);
+      //console.log(d);
         var o = {x: source.x0, y: source.y0};
         return diagonal(o, o);
       })
@@ -245,10 +270,10 @@ function update(source) {
   // Creates a curved (diagonal) path from parent to the child nodes
   function diagonal(s, d) {
 
-    var path = `M ${s.y} ${s.x}
+    var path = `M ${s.y-8} ${s.x}
             C ${(s.y + d.y) / 2} ${s.x},
               ${(s.y + d.y) / 2} ${d.x},
-              ${d.y} ${d.x}`
+              ${d.y+8} ${d.x}`
 
     return path
   }
@@ -267,7 +292,6 @@ function update(source) {
 }
 }
   ngOnDestroy(){
-  console.log("mdr");
     d3.select("svg").selectAll("*").remove();
     d3.select("svg").remove();
   }

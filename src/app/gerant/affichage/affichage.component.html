@@ -1,5 +1,5 @@
 <div class="form-row" >
-	<div class="form-group col-6" style="text-align:right;margin-top: 50px;margin-left: 50px;">
+	<div class="form-group col-12" style="text-align:center;margin-top: 50px;">
 		<h5>Choisir un Hôtel </h5>
 		
 		<select class="selectpicker" style="width:60%;width: 250px;"  [(ngModel)]="selected_hotel" >
@@ -7,10 +7,8 @@
 			<option *ngFor="let hotel of hotels" [value]="hotel.id_hotel">{{hotel.nom}}</option>
 		</select>
 	</div>
-	<div style="text-align:left;margin-top: 75px;margin-left: 20px;">
-		<button class="btn btn-info btn">Visualiser !</button>
-	</div>
 </div>
 
-<!-- TODO : modifier ici pour que l'onthologie ne s'affiche qu'ici -->
-<router-outlet></router-outlet>
+<div *ngIf="selected_hotel!=undefined">
+		<router-outlet></router-outlet>
+</div>

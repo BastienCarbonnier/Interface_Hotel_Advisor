@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OntologieService } from './ontologie.service';
 import { ActivatedRoute } from '@angular/router';
 import { AdminService } from '../admin/admin.service';
+import { Observable, forkJoin } from 'rxjs';
 import * as d3 from 'd3';
 
 @Component({
@@ -41,23 +42,28 @@ export class OntologieComponent implements OnInit {
         this.liste_commentaire = res;
         if(this.liste_commentaire.length!=0){
           this.noComment = true;
-          let commentaire : Object[] = [];
+          let tasks = [];
           for (let key in this.liste_commentaire) {
-              commentaire[key]=this.liste_commentaire[key]['commentaire'];
+            tasks.push(this.service.getPolariteCommentaire(this.liste_commentaire[key]['commentaire']));
           }
-          
-          //changer ici
-          this.service.getOntologie().subscribe(res =>{
-            this.listOnto = res;
-            console.log(this.listOnto[0]);
-            this.ontologie();
-          });
+
+          forkJoin(...tasks).subscribe(
+              data => { // Note: data is an array now
+                console.log(data+"sss")
+                //changer ici
+                this.service.getOntologie().subscribe(res =>{
+                  this.listOnto = res;
+                  //console.log(this.listOnto[0]);
+                  this.ontologie();
+                });
+              }, err => console.log('error ' + err),
+              () => console.log('Ok ')
+            );
         }else{
           this.noComment=false;
           d3.select("svg").selectAll("*").remove();
           d3.select("svg").remove();
         }
-        console.log(this.liste_commentaire);
       });
   }
 

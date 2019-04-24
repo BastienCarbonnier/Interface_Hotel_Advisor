@@ -21,6 +21,31 @@ import { AffichageComponent } from './gerant/affichage/affichage.component';
 import { GuardGerantService } from './gerant/guard-gerant.service';
 import { GuardAdminService } from './admin/guard-admin.service';
 import { GuardEmetteurService } from './user/guard-emetteur.service';
+import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION, NgxUiLoaderRouterModule, NgxUiLoaderHttpModule } from 'ngx-ui-loader';
+
+const ngxUiLoaderConfig : NgxUiLoaderConfig =
+{
+  "blur": 1,
+  "fgsColor": "#00ACC1",
+  "fgsPosition": "center-center",
+  "fgsSize": 60,
+  "fgsType": "three-strings",
+  "gap": 24,
+  "logoPosition": "center-center",
+  "logoSize": 120,
+  "logoUrl": "",
+  "masterLoaderId": "master",
+  "overlayBorderRadius": "0",
+  "overlayColor": "rgba(40, 40, 40, 0.8)",
+  "pbColor": "#00ACC1",
+  "pbDirection": "ltr",
+  "pbThickness": 3,
+  "hasProgressBar": false,
+  "text": "",
+  "textColor": "#FFFFFF",
+  "textPosition": "center-center",
+  "threshold": 500
+};
 
 
 const routes: Routes = [
@@ -79,6 +104,9 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     AppRoutingModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderRouterModule, 
+    NgxUiLoaderHttpModule,
     FormsModule,
     RouterModule.forRoot(routes)
   ],

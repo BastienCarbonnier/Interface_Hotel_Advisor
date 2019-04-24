@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AdminService } from '../admin/admin.service';
 import { Observable, forkJoin } from 'rxjs';
 import * as d3 from 'd3';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 
 @Component({
   selector: 'app-ontologie',
@@ -19,7 +21,7 @@ export class OntologieComponent implements OnInit {
   private liste_commentaire : Object[] = [];
   private noComment : boolean = false;
 
-  constructor(private service: OntologieService, private route: ActivatedRoute, private serviceAdmin: AdminService ) { }
+  constructor(private service: OntologieService, private route: ActivatedRoute, private serviceAdmin: AdminService, private ngxService: NgxUiLoaderService ) { }
   
   ngOnInit() {
     this.sub = this.route.params.subscribe(params =>{
@@ -43,21 +45,22 @@ export class OntologieComponent implements OnInit {
         if(this.liste_commentaire.length!=0){
           this.noComment = true;
           let tasks = [];
+          this.ngxService.start();
           for (let key in this.liste_commentaire) {
             tasks.push(this.service.getPolariteCommentaire(this.liste_commentaire[key]['commentaire']));
           }
 
           forkJoin(...tasks).subscribe(
               data => { // Note: data is an array now
-                console.log(data+"sss")
-                //changer ici
+                this.ngxService.stop();
+                console.log(data);
                 this.service.getOntologie().subscribe(res =>{
                   this.listOnto = res;
                   //console.log(this.listOnto[0]);
                   this.ontologie();
                 });
               }, err => console.log('error ' + err),
-              () => console.log('Ok ')
+              () => console.log("Ok")
             );
         }else{
           this.noComment=false;
@@ -194,7 +197,7 @@ function update(source) {
       .attr('class', 'node')
       .attr('r', 1e-6)
       .style("fill", function(d) {
-          console.log(d);
+          //console.log(d);
           //return d._children ? "lightsteelblue" : "#fff";
       })
       .attr("style","fill: #fff;stroke: steelblue;stroke-width: 3px;");

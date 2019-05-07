@@ -18,7 +18,7 @@ export class OntologieComponent implements OnInit {
   private selected_hotel : string;
   private selected_hotel_old : string;
   private sub : any;
-  private liste_commentaire : Object[] = [];
+  private liste_commentaire : any;
   private noComment : boolean = false;
   private tempData :any;
 
@@ -40,7 +40,6 @@ export class OntologieComponent implements OnInit {
 
   }
   searchNode(d: any){
-    console.log(d);
     for(let firstArray of this.tempData){
       for(let obj of firstArray){
         if((d.name+" ").includes(obj.mot.toLowerCase()+" "))
@@ -135,6 +134,12 @@ root.y0 = 0;
 root.children.forEach(collapse);
 
 this.associatePola(root.data);
+    for(let com of this.liste_commentaire){
+      this.service.putCommentaireTraité(com.id_com).subscribe(res => {
+        console.log(res);
+      });
+    }
+console.log("Commentaire traité !");
 
 update(root);
 

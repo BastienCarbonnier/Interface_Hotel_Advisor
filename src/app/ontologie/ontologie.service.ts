@@ -20,4 +20,9 @@ export class OntologieService {
   	let url = "http://localhost:3000/";
   	return this.http.post(url,data);
   }
+  putCommentaireTraité(id:any){
+  	let url = "http://localhost:8888/comTraiter/";
+  	let data = {"id":id};
+  	return this.http.put(url,data);
+  }
 }

@@ -12,8 +12,9 @@ export class OntologieService {
 
   constructor(private http: HttpClient) { }
 
-  getOntologie(): Observable<any>{
-  	return this.http.get("http://localhost:8888/ontologie");
+  getOntologie(id:any): Observable<any>{
+  	let observable: Observable<any> = this.http.get("http://localhost:8888/ontologie?id="+id);
+  	return observable;
   }
 
   getPolariteCommentaire(data:any): Observable<any>{

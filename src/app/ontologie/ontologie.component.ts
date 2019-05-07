@@ -54,7 +54,7 @@ export class OntologieComponent implements OnInit {
         }
       }
     }
-    console.log(d.name +" non trouvé dans l'ontologie.");
+    //console.log(d.name +" non trouvé dans l'ontologie.");
   }
 
   associatePola(root:any){
@@ -72,6 +72,7 @@ export class OntologieComponent implements OnInit {
   traitement(id : string){
       this.serviceAdmin.getCommentaireByIdNoTraiter(this.selected_hotel).subscribe(res =>{
         this.liste_commentaire = res;
+        console.log(" HOTEL "+this.selected_hotel);
         if(this.liste_commentaire.length!=0){
           this.noComment = true;
           let tasks = [];
@@ -85,9 +86,8 @@ export class OntologieComponent implements OnInit {
                 this.ngxService.stop();
                 console.log(data);
                 this.tempData = data;
-                this.service.getOntologie().subscribe(res =>{
-                  this.listOnto = res;
-                  //console.log(this.listOnto[0]);
+                this.service.getOntologie(this.selected_hotel).subscribe(res =>{
+                  this.listOnto = res[0].ontologie;
                   this.ontologie();
                 });
               }, err => console.log(err),
@@ -97,11 +97,19 @@ export class OntologieComponent implements OnInit {
           this.noComment=false;
           d3.select("svg").selectAll("*").remove();
           d3.select("svg").remove();
+                this.service.getOntologie(this.selected_hotel).subscribe(res =>{
+                  this.listOnto = res[0].ontologie;
+                  this.ontologie();
+                });
         }
       });
   }
 
   ontologie(){
+  //Apparemment avec l'hotel montpellierain, cela appel deux fois l'ontologie, d'où le besoin d'effacer
+  d3.select("svg").selectAll("*").remove();
+  d3.select("svg").remove();
+  console.log("Appel ontologie");
     var self = this;
 // Set the dimensions and margins of the diagram
 var margin = {top: 20, right: 90, bottom: 30, left: 90},
@@ -126,20 +134,23 @@ var i = 0,
 var treemap = d3.tree().size([height, width]);
 
 // Assigns parent, children, height, depth
-root = d3.hierarchy(this.listOnto[0], function(d) { return d.children; });
+root = d3.hierarchy(this.listOnto, function(d) { return d.children; });
 root.x0 = height / 2;
 root.y0 = 0;
 
 // Collapse after the second level
 root.children.forEach(collapse);
 
-this.associatePola(root.data);
+if(this.noComment){
+  this.associatePola(root.data);
     for(let com of this.liste_commentaire){
       this.service.putCommentaireTraité(com.id_com).subscribe(res => {
         console.log(res);
       });
     }
-console.log("Commentaire traité !");
+    console.log("Commentaire traité !");
+}
+
 
 update(root);
 

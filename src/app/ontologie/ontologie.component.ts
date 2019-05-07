@@ -148,9 +148,12 @@ if(this.noComment){
         console.log(res);
       });
     }
-    console.log("Commentaire traité !");
+    let data = {"id_hotel":this.selected_hotel,"ontologie":root.data};
+    this.service.updateOntologie(data).subscribe(res => {
+        console.log(res);
+    });
+    console.log("Commentaire traité, ontologie sauvegardé !");
 }
-
 
 update(root);
 

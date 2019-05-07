@@ -26,4 +26,9 @@ export class OntologieService {
   	let data = {"id":id};
   	return this.http.put(url,data);
   }
+  updateOntologie(onto:any){
+  let url = "http://localhost:8888/ontologie/update";
+  	let data = onto;
+  	return this.http.put(url,data);
+  }
 }

@@ -16,7 +16,8 @@ export class OntologieService {
   	return this.http.get("http://localhost:8888/ontologie");
   }
 
-  getPolariteCommentaire(commentaire : string): Observable<any>{
-  	return this.http.get("http://localhost:3000/?phrase="+commentaire);
+  getPolariteCommentaire(data:any): Observable<any>{
+  	let url = "http://localhost:3000/";
+  	return this.http.post(url,data);
   }
 }

@@ -20,6 +20,7 @@ export class OntologieComponent implements OnInit {
   private sub : any;
   private liste_commentaire : Object[] = [];
   private noComment : boolean = false;
+  private tempData :any;
 
   constructor(private service: OntologieService, private route: ActivatedRoute, private serviceAdmin: AdminService, private ngxService: NgxUiLoaderService ) { }
   
@@ -38,6 +39,36 @@ export class OntologieComponent implements OnInit {
       }
 
   }
+  searchNode(d: any){
+    console.log(d);
+    for(let firstArray of this.tempData){
+      for(let obj of firstArray){
+        if((d.name+" ").includes(obj.mot.toLowerCase()+" "))
+          return obj;
+      }
+    }
+    for(let synonyme of d.synonymes){
+      for(let firstArray of this.tempData){
+        for(let obj of firstArray){
+          if((synonyme+" ").includes(obj.mot.toLowerCase()+" "))
+            return obj;
+        }
+      }
+    }
+    console.log(d.name +" non trouvé dans l'ontologie.");
+  }
+
+  associatePola(root:any){
+    var obj = this.searchNode(root);
+    if(obj != undefined){
+      root.polarite = obj.pol;
+    }
+    if(root.children){
+      for(let child of root.children){
+        this.associatePola(child);
+      }
+    }
+  }
 
   traitement(id : string){
       this.serviceAdmin.getCommentaireByIdNoTraiter(this.selected_hotel).subscribe(res =>{
@@ -47,20 +78,21 @@ export class OntologieComponent implements OnInit {
           let tasks = [];
           this.ngxService.start();
           for (let key in this.liste_commentaire) {
-            tasks.push(this.service.getPolariteCommentaire(this.liste_commentaire[key]['commentaire']));
+            tasks.push(this.service.getPolariteCommentaire({"phrase":this.liste_commentaire[key]['commentaire']}));
           }
 
           forkJoin(...tasks).subscribe(
               data => { // Note: data is an array now
                 this.ngxService.stop();
                 console.log(data);
+                this.tempData = data;
                 this.service.getOntologie().subscribe(res =>{
                   this.listOnto = res;
                   //console.log(this.listOnto[0]);
                   this.ontologie();
                 });
-              }, err => console.log('error ' + err),
-              () => console.log("Ok")
+              }, err => console.log(err),
+              () => console.log("Chargement des commentaires et de l'ontologie : ok")
             );
         }else{
           this.noComment=false;
@@ -71,60 +103,7 @@ export class OntologieComponent implements OnInit {
   }
 
   ontologie(){
-  
-	  	var treeData = 
-		  {
-		    "name": "Top Level",
-		    "children": [
-		      {
-		        "name": "Level 2: A",
-		        "children": [
-		          {
-		            "name": "Son of A",
-		            "children":[
-		            {
-		            	"name":"Samson"
-		            },
-		            {
-		            	"name":"Sam le Brave"
-		            },
-		            {
-		            	"name":"Sans Gluten"
-		            }
-		            ],
-		          },
-		          {
-		            "name": "Daughter of A",
-		            "children":[
-		            {
-		            	"name":"Samson"
-		            },
-		            {
-		            	"name":"Sam le Brave"
-		            },
-		            {
-		            	"name":"Sans Gluten"
-		            }
-		            ]
-		          }
-		        ]
-		      },
-		      {
-		        "name": "Level 2: B",
-		        "children":[
-		            {
-		            	"name":"Samson"
-		            },
-		            {
-		            	"name":"Sam le Brave"
-		            },
-		            {
-		            	"name":"Sans Gluten"
-		            }
-		            ]
-		      }
-		    ]
-		  };
+    var self = this;
 // Set the dimensions and margins of the diagram
 var margin = {top: 20, right: 90, bottom: 30, left: 90},
     width = 960 - margin.left - margin.right,
@@ -154,6 +133,8 @@ root.y0 = 0;
 
 // Collapse after the second level
 root.children.forEach(collapse);
+
+this.associatePola(root.data);
 
 update(root);
 
@@ -211,7 +192,7 @@ function update(source) {
       .attr("text-anchor", function(d) {
           return d.children || d._children ? "end" : "start";
       })
-      .text(function(d) { return d.data.name; });
+      .text(function(d) {  return d.data.name; });
 
   // UPDATE
   var nodeUpdate = nodeEnter.merge(node);
@@ -226,25 +207,25 @@ function update(source) {
   // Update the node attributes and style
   nodeUpdate.select('circle.node')
     .attr('r', 10)
-    .style("fill", function(d) {
+    .style("fill", (d) => {
         if(d.data.polarite){
         var bg;
-          if(d.data.polarite[1] > d.data.polarite[0] && d.data.polarite[1] > d.data.polarite[2]){
-            if(d.data.polarite[0] >= d.data.polarite[2]){
-                bg = 1 - ((d.data.polarite[1] - d.data.polarite[0])/100)%2;
+          if(d.data.polarite.neutre > d.data.polarite.neg && d.data.polarite.neutre > d.data.polarite.pos){
+            if(d.data.polarite.neg >= d.data.polarite.pos){
+                bg = 1 - (d.data.polarite.neutre - d.data.polarite.neg);
                 return `rgba(220,20,60,${bg})`;
             }
             else{
-                bg = 1 - ((d.data.polarite[1] - d.data.polarite[2])/100)%2;
+                bg = 1 - (d.data.polarite.neutre - d.data.polarite.pos);
                 return `rgba(0,128,0,${bg})`;
             }
           }
-          else if(d.data.polarite[0] > d.data.polarite[2]){
-                bg = 1 - ((d.data.polarite[1] + d.data.polarite[2])/100)%2;
+          else if(d.data.polarite.neg > d.data.polarite.pos){
+                bg = 1 - (d.data.polarite.neutre + d.data.polarite.pos);
                 return `rgba(220,20,60,${bg})`;
           }
           else{
-                bg = 1 - ((d.data.polarite[1] + d.data.polarite[0])/100)%2;
+                bg = 1 - (d.data.polarite.neutre + d.data.polarite.neg);
                 return `rgba(0,128,0,${bg})`;
           }
         }

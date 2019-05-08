@@ -73,6 +73,7 @@ export class OntologieComponent implements OnInit {
       this.serviceAdmin.getCommentaireByIdNoTraiter(this.selected_hotel).subscribe(res =>{
         this.liste_commentaire = res;
         console.log(" HOTEL "+this.selected_hotel);
+        console.log(this.liste_commentaire);
         if(this.liste_commentaire.length!=0){
           this.noComment = true;
           let tasks = [];
@@ -274,6 +275,66 @@ function update(source) {
   // On exit reduce the opacity of text labels
   nodeExit.select('text')
     .style('fill-opacity', 1e-6);
+
+  // ****************** context menu section *************************** 
+
+  var existingMenu = false;
+    d3.selectAll("g.node").on("contextmenu", function(data, index) {
+    //handle right click
+    console.log(data);
+    console.log(index);
+    if(!existingMenu){
+      var contxt = d3.select("svg").append("g").attr("class","contextmenu").attr("transform", function(d, i) { return "translate(0,0)"; });;
+
+      contxt.append("rect")
+                  .attr("y",data.x)
+                  .attr("x",data.y+105)
+                  .attr("height",70)
+                  .attr("width",300)
+                  .attr("style","fill-opacity:0;stroke:steelblue;")
+                  .on("contextmenu",function(){
+                    existingMenu = false;
+                    d3.select('.contextmenu').remove();
+                    d3.event.preventDefault();
+                  });
+                  
+      contxt.append("text")
+                    .attr("y",data.x+25)
+                    .attr("x",data.y+150)
+                    .attr("font-family","sans-serif")
+                    .attr("fill", "black")
+                    .text(function(d) {  return "Afficher les commentaires" })
+                    .on("contextmenu",function(){
+                      existingMenu = false;
+                      d3.select('.contextmenu').remove();
+                      d3.event.preventDefault();
+                    });
+
+      contxt.append("text")
+                    .attr("y",data.x+50)
+                    .attr("x",data.y+185)
+                    .attr("font-family","sans-serif")
+                    .attr("fill", "black")
+                    .text(function(d) {  return "Ajouter un noeud" })
+                    .on("contextmenu",function(){
+                      existingMenu = false;
+                      d3.select('.contextmenu').remove();
+                      d3.event.preventDefault();
+                    });
+
+      existingMenu = true;
+     //stop showing browser menu
+   }
+   d3.event.preventDefault();
+    });
+
+    /*d3.select('svg').on('click', function() {
+            console.log("prout");
+            d3.select('rect').attr("y")+100
+            console.log(d3.mouse(this));
+            //d3.select('rect').remove();
+
+    });*/
 
   // ****************** links section ***************************
 

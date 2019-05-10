@@ -18,7 +18,7 @@ export class AvisComponent implements OnInit, DoCheck {
 	constructor(private service: AdminService) { }
 
 	updateTable() : void {
-		this.service.getCommentaireById(this.selected_hotel).subscribe(res =>{
+		this.service.getCommentaireByIdNoTraiter(this.selected_hotel).subscribe(res =>{
     		this.liste_commentaire = res;
 		});
 	}
@@ -39,6 +39,16 @@ export class AvisComponent implements OnInit, DoCheck {
 			}			
 		}
 		this.selected_hotel_old = this.selected_hotel;
+	}
+
+	aTraiterCommentaire(id:string){
+		let response;
+		this.service.putCommentaireATraité(id).subscribe(res =>{
+    		response = res;
+    		if(response=="Modification réussie !"){
+    			this.updateTable();
+    		}
+		});
 	}
 
 	supprimerCommentaire(id:string){

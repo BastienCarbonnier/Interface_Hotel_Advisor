@@ -70,7 +70,7 @@ export class OntologieComponent implements OnInit {
   }
 
   traitement(id : string){
-      this.serviceAdmin.getCommentaireByIdNoTraiter(this.selected_hotel).subscribe(res =>{
+      this.serviceAdmin.getCommentaireByIdATraiter(this.selected_hotel).subscribe(res =>{
         this.liste_commentaire = res;
         console.log(" HOTEL "+this.selected_hotel);
         console.log(this.liste_commentaire);

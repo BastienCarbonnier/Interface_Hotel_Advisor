@@ -9,7 +9,7 @@
 </div>
 
 <div *ngIf="liste_commentaire?.length == 0" style="text-align: center;">
-	<h4>Pas de commentaire de cette hôtel pour l'instant</h4>
+	<h4>Pas de commentaire à traiter pour cette hôtel pour l'instant</h4>
 </div>
 
 <div *ngIf="liste_commentaire?.length != 0" >
@@ -20,6 +20,7 @@
               <th scope="col">Nom</th>
               <th scope="col">Prenom</th>
               <th scope="col">Commentaire</th>
+              <th scope="col">Valider</th>
               <th scope="col">Supprimer</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
               <td>{{com.uti[0].prenom}}</td>
               <td>{{com.uti[0].nom}}</td>
               <td>{{com.commentaire}}</td>
+              <td><button  class="btn btn-success btn-sm" (click)="aTraiterCommentaire(com.id_com)">Valider</button></td>
               <td><button  class="btn btn-danger btn-sm" (click)="supprimerCommentaire(com.id_com)">Supprimer</button></td>
             </tr>
         </ng-container>

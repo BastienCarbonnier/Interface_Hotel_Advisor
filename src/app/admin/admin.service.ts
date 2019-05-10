@@ -21,6 +21,17 @@ export class AdminService {
       return observable;
     }
 
+    getCommentaireByIdATraiter(id: string): Observable<any>{
+      let observable: Observable<any> = this.http.get("http://localhost:8888/comHotelATraite/hotelId="+id);
+      return observable;
+    }
+
+    putCommentaireATraité(id:any){
+      let url = "http://localhost:8888/comATraiter/";
+      let data = {"id":id};
+      return this.http.put(url,data);
+    }
+
   	getHotel() :Observable<any>{
   		let observable: Observable<any> = this.http.get("http://localhost:8888/allHotel");
   		return observable;

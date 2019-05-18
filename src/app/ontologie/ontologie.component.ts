@@ -60,12 +60,94 @@ export class OntologieComponent implements OnInit {
   associatePola(root:any){
     var obj = this.searchNode(root);
     if(obj != undefined){
-      root.polarite = obj.pol;
+          if(root.numberOfCom == null){
+            root.numberOfCom = 1;
+            root.polarite = obj.pol;
+          }
+          else{
+            //calcul de la nouvelle moyenne de la polarité
+            root.polarite.neg = ((root.polarite.neg * root.numberOfCom) + obj.pol.neg)/(root.numberOfCom +1);
+            root.polarite.neutre = ((root.polarite.neutre * root.numberOfCom) + obj.pol.neutre)/(root.numberOfCom +1);
+            root.polarite.pos = ((root.polarite.pos * root.numberOfCom) + obj.pol.pos)/(root.numberOfCom +1);
+
+            root.numberOfCom++;
+          }
     }
     if(root.children){
       for(let child of root.children){
         this.associatePola(child);
       }
+    }
+  }
+
+  propagationPola(root:any){
+    if(root.children != null){
+      let arrayOfPola = [];
+      let newPola = {pos:0,neg:0,neutre:0};
+      for(let child of root.children){
+        this.propagationPola(child);
+        if(child.data.polarite != null){
+          arrayOfPola.push(child.data.polarite);
+        }
+      }
+      if(arrayOfPola.length != 0){
+        let index=1;
+        for(let tempPola of arrayOfPola){
+
+          newPola.pos = ((newPola.pos * index) + tempPola.pos)/(index+1);
+          newPola.neg = ((newPola.neg * index) + tempPola.neg)/(index+1);
+          newPola.neutre = ((newPola.neutre * index) + tempPola.neutre)/(index+1);
+          index++;
+        }
+        if(root.data.polarite == null){
+            root.data.polarite = newPola;
+            root.data.numberOfCom = 1;
+        }
+        else{
+          let nbCom = (root.data.numberOfCom ? root.data.numberOfCom : 1);
+
+          root.data.polarite.pos = ((root.data.polarite.pos * nbCom) + newPola.pos)/(nbCom +1);
+          root.data.polarite.neutre = ((root.data.polarite.neutre * nbCom) + newPola.neutre)/(nbCom +1);
+          root.data.polarite.neg = ((root.data.polarite.neg * nbCom) + newPola.neg)/(nbCom +1);
+
+        }
+      }
+    }
+    else if(root._children != null){
+      let arrayOfPola = [];
+      let newPola = {pos:0,neg:0,neutre:0};
+      for(let child of root._children){
+        this.propagationPola(child);
+        if(child.data.polarite != null){
+          arrayOfPola.push(child.data.polarite);
+        }
+      }
+      if(arrayOfPola.length != 0){
+        let index = 1;
+        for(let tempPola of arrayOfPola){
+
+          newPola.pos = ((newPola.pos * index) + tempPola.pos)/(index+1);
+          newPola.neg = ((newPola.neg * index) + tempPola.neg)/(index+1);
+          newPola.neutre = ((newPola.neutre * index) + tempPola.neutre)/(index+1);
+          index++;
+        }
+        if(root.data.polarite == null){
+            root.data.polarite = newPola;
+            root.data.numberOfCom = 1;
+        }
+        else{
+          let nbCom = (root.data.numberOfCom ? root.data.numberOfCom : 1);
+
+          root.data.polarite.pos = ((root.data.polarite.pos * nbCom) + newPola.pos)/(nbCom +1);
+          root.data.polarite.neutre = ((root.data.polarite.neutre * nbCom) + newPola.neutre)/(nbCom +1);
+          root.data.polarite.neg = ((root.data.polarite.neg * nbCom) + newPola.neg)/(nbCom +1);
+  
+          root.data.numberOfCom++;
+        }
+      }
+    }
+    else{
+      //console.log(root);
     }
   }
 
@@ -144,6 +226,7 @@ root.children.forEach(collapse);
 
 if(this.noComment){
   this.associatePola(root.data);
+  //this.propagationPola(root.data);
     for(let com of this.liste_commentaire){
       this.service.putCommentaireTraité(com.id_com).subscribe(res => {
         console.log(res);
@@ -155,7 +238,7 @@ if(this.noComment){
     });
     console.log("Commentaire traité, ontologie sauvegardé !");
 }
-
+this.propagationPola(root);
 update(root);
 
 // Collapse the node and all it's children

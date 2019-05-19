@@ -1,3 +1,63 @@
-<p>
-  instanciation works!
-</p>
+<div *ngIf="saisie_incorrecte" style="text-align:center">
+  <p>
+    <ngb-alert [dismissible]="false" type="danger">
+      <strong>Erreur !</strong> Saisir tous les champs ! 
+    </ngb-alert>
+  </p>
+</div>
+<div *ngIf="saisie_ok" style="text-align:center">
+  <p>
+    <ngb-alert [dismissible]="false" type="success">
+      <strong>Parfait !</strong> Hôtel ajouté ! 
+    </ngb-alert>
+  </p>
+</div>
+
+<div *ngIf="erreur_bdd" style="text-align:center">
+  <p>
+    <ngb-alert [dismissible]="false" type="success">
+      <strong>Erreur</strong> Erreur lors de l'ajout dans la BDD. 
+    </ngb-alert>
+  </p>
+</div>
+<br>
+<br>
+
+<div class="form-row" style="text-align:center">
+	<div class="form-group col-sm-4">
+		
+		<h5>Choisir le gérant </h5>
+		
+		<select class="selectpicker" style="width:60%;width: 250px;"  [(ngModel)]="selected_gerant" >
+			<option [ngValue]="undefined" disabled>Choisir un gérant</option>
+			<option *ngFor="let gerant of gerants" [value]="gerant.mail">{{gerant.mail}}</option>
+		</select>
+
+	</div>
+
+	<div class="form-group col-sm-2">
+		<h5>Nom de l'hôtel</h5>
+		<input type="text" placeholder="Nom de l'hôtel" [(ngModel)]="nom" />
+	</div>
+
+	<div class="form-group col-sm-2">
+		<h5>Type de l'hôtel</h5>
+		<input type="text" placeholder="Type de l'hôtel" [(ngModel)]="type" />
+	</div>
+
+	<div class="form-group col-sm-2">
+		<h5>Lieu de l'hôtel</h5>
+		<input type="text" placeholder="Lieu de l'hôtel" [(ngModel)]="lieu" />
+	</div>
+
+	<div class="form-group col-sm-2">
+		<h5>Capacité</h5>
+		<input style=" width:70px;" [(ngModel)]="nb_capacite" min=25 type="number">
+	</div>
+
+</div>
+<br>
+
+<div style="text-align:center">
+	<button  (click)="addHotel()" class="btn btn-info btn-sm col-sm-1">Envoyer !</button>
+</div>

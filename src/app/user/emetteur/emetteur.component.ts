@@ -54,11 +54,14 @@ export class EmetteurComponent implements OnInit {
 		  		this.nb_jour=1;
 		  		this.saisie_incorrecte = false;
 		  		this.saisie_ok = true;
+          this.erreur_bdd = false;
 		  		this.la_date_choisi = [];
 		  		this.commentaire="";
 	        }
 	        else{
 	          this.erreur_bdd = true;
+            this.saisie_incorrecte = false;
+            this.saisie_ok = false;
 	        }
   		});
 
@@ -66,6 +69,7 @@ export class EmetteurComponent implements OnInit {
   	}else{
   		this.saisie_incorrecte = true;
   		this.saisie_ok=false;
+      this.erreur_bdd = false;
   	}
   }
 }

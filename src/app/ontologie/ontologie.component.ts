@@ -365,24 +365,23 @@ function update(source) {
     d3.selectAll("g.node").on("contextmenu", function(data, index) {
     //handle right click
     console.log(data);
-    console.log(index);
+    d3.select(".addmenu").remove();
     if(!existingMenu){
-      var contxt = d3.select("svg").append("g").attr("class","contextmenu").attr("transform", function(d, i) { return "translate(0,0)"; });;
+      var contxt = d3.select("svg").append("g").attr("class","contextmenu").attr("transform", function(d, i) { return "translate(0,0)"; });
 
       contxt.append("rect")
                   .attr("y",data.x)
                   .attr("x",data.y+105)
                   .attr("height",70)
                   .attr("width",300)
-                  .attr("style","fill-opacity:0;stroke:steelblue;")
+                  .attr("style","fill:white;stroke:steelblue;")
                   .on("contextmenu",function(){
                     existingMenu = false;
                     d3.select('.contextmenu').remove();
                     d3.event.preventDefault();
                   });
-                  
-      contxt.append("text")
-                    .attr("y",data.x+25)
+      let txt1 = contxt.append("text");
+                txt1.attr("y",data.x+25)
                     .attr("x",data.y+150)
                     .attr("font-family","sans-serif")
                     .attr("fill", "black")
@@ -391,10 +390,17 @@ function update(source) {
                       existingMenu = false;
                       d3.select('.contextmenu').remove();
                       d3.event.preventDefault();
+                    }).on("mouseenter",function(){
+                      txt1.attr("fill","#c22f44");
+                    }).on("mouseleave",function(){
+                      txt1.attr("fill","black");
+                    }).on("click",function(){
+                      existingMenu = false;
+                      self.addNode(data);
+                      d3.select('.contextmenu').remove();
                     });
-
-      contxt.append("text")
-                    .attr("y",data.x+50)
+      let txt2 = contxt.append("text");
+                txt2.attr("y",data.x+50)
                     .attr("x",data.y+185)
                     .attr("font-family","sans-serif")
                     .attr("fill", "black")
@@ -403,7 +409,16 @@ function update(source) {
                       existingMenu = false;
                       d3.select('.contextmenu').remove();
                       d3.event.preventDefault();
+                    }).on("mouseenter",function(){
+                      txt2.attr("fill","#c22f44");
+                    }).on("mouseleave",function(){
+                      txt2.attr("fill","black");
+                    }).on("click",function(){
+                      existingMenu = false;
+                      self.addNode(data);
+                      d3.select('.contextmenu').remove();
                     });
+      //let txt2 = contxt.a
 
       existingMenu = true;
      //stop showing browser menu
@@ -481,6 +496,43 @@ function update(source) {
   }
 }
 }
+  addNode(data:any){
+    console.log(data);
+    var self = this;
+    var contxt = d3.select("svg").append("g").attr("class","addmenu").attr("transform", function(d, i) { return "translate(0,0)"; });
+          var div = contxt.append("foreignObject").attr("class","menuNode")
+                  .attr("y",data.x)
+                  .attr("x",data.y+105)
+                  .attr("height",90)
+                  .attr("width",290)
+                  .append("xhtml:div").append("div");
+                  div.attr("style","border:3px solid steelblue;border-radius:15px;background-color:white");
+                  div.append("label").html("Nom du noeud : ");
+                  div.append("input").attr("type","text").attr("class","inputNode");
+          var button = div.append("button");
+          button.html("Valider");
+          var circleExit = contxt.append("circle");
+        circleExit.attr("cy",data.x)
+                  .attr("cx",data.y+390)
+                  .attr("r",10)
+                  .attr("style","fill:#c22f44;stroke:steelblue;"); 
+        circleExit.on("mouseenter",function(){
+                  circleExit.attr("style","fill:#fc1338;stroke:steelblue;"); 
+        });
+        circleExit.on("mouseleave",function(){
+                  circleExit.attr("style","fill:#c22f44;stroke:steelblue;"); 
+        });
+        circleExit.on("click",function(){
+                  d3.select(".addmenu").remove();
+        });
+
+        button.on("click",function(){
+        // TODO : Voir pour trouver une autre méthode avec D3 pour récupérer le texte d'un input, vérifier si le mot n'existe pas parmis les synonymes des noeuds de l'arbre
+              let inp = d3.select(".inputNode")._groups[0][0].value;
+              let newNode = {name:inp,children:[],synonymes:[]};
+              data.data.children.push(newNode);
+        });
+  }
   ngOnDestroy(){
     d3.select("svg").selectAll("*").remove();
     d3.select("svg").remove();

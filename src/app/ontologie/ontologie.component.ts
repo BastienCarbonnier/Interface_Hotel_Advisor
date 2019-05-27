@@ -42,22 +42,15 @@ export class OntologieComponent implements OnInit {
   searchNode(d: any){
     for(let firstArray of this.tempData){
       for(let obj of firstArray){
-        if((d.name+" ") == (obj.mot.toLowerCase()+" ")){
-          console.log(firstArray);
-          console.log(d.name);
+        if((d.name+" ") == (obj.mot.toLowerCase()+" "))
           return obj;
-        }
       }
     }
     for(let synonyme of d.synonymes){
       for(let firstArray of this.tempData){
         for(let obj of firstArray){
-          if((synonyme+" ") == (obj.mot.toLowerCase()+" ")){
-            console.log("synonyme");
-            console.log(" comm "+obj.mot);
-            console.log(synonyme);
+          if((synonyme+" ") == (obj.mot.toLowerCase()+" "))
             return obj;
-          }
         }
       }
     }

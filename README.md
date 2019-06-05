@@ -1,5 +1,4 @@
 # Interface_Hotel_Advisor
-Ne contient pas le package de 250Mo Node_modules, pour l'instant.
 # HotelAdvisor
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.2.
